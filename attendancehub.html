@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Hub</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+        }
+        .header {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+            background-color: #e6e6e6;
+        }
+        .tile {
+            background-color: #0055b3;
+            color: white;
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            transition: transform 0.3s ease;
+        }
+        .tile img {
+            max-width: 80px;
+            max-height: 80px;
+            margin-bottom: 10px;
+        }
+        .tile:hover, .large-tile:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+        .contrast {
+            background-color: #FFEB3B;
+            color: black;
+        }
+        .contrast .header {
+            background-color: #607D8B;
+        }
+        .contrast .tile {
+            background-color: #9E9E9E;
+        }
+        button {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Attendance Hub</h1>
+    <button onclick="toggleContrast()">Contrast</button>
+</div>
+<div class="grid-container">
+    <div class="tile large-tile" style="background-image: url('building-image.jpg'); background-size: cover;"></div>
+    <a href="https://myhud.hud.ac.uk/">
+        <div class="tile">
+            <img src="profile.png" alt="Account">
+            <h2>Account Information</h2>
+        </div>
+    </a>
+    <a href="http://localhost:63342/Project/index.html">
+        <div class="tile">
+            <img src="calendar.png" alt="Calendar">
+            <h2>Timetable</h2>
+        </div>
+    </a>
+    <a href="https://www.huddersfieldsu.co.uk/">
+        <div class="tile">
+            <img src="studentsunion.png" alt="Students' Union">
+            <h2>Students' Union</h2>
+        </div>
+    </a>
+    <a href="http://localhost:63342/Project/qrcode.html">
+        <div class="tile">
+            <img src="attendance.png" alt="Attendance">
+            <h2>My Attendance</h2>
+        </div>
+    </a>
+    <div class="tile" onclick="getLocation()">
+        <img src="location.png" alt="Location">
+        <h2>Location</h2>
+    </div>
+    <a href="http://localhost:63342/Project/myattendance.php">
+        <div class="tile">
+            <img src="check.png" alt="Today's Class">
+            <h2>Today's Class</h2>
+        </div>
+    </a>
+</div>
+
+<script>
+    let isContrast = false;
+    function toggleContrast() {
+        isContrast = !isContrast;
+        document.body.classList.toggle('contrast', isContrast);
+    }
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showPosition(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        console.log("Latitude: " + lat + "\nLongitude: " + lon);
+    }
+
+    function showError(error) {
+        let message = "";
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                message = "User denied the request for Geolocation.";
+                break;
+            case error.POSITION_UNAVAILABLE:
+                message = "Location information is unavailable.";
+                break;
+            case error.TIMEOUT:
+                message = "The request to get user location timed out.";
+                break;
+            case error.UNKNOWN_ERROR:
+                message = "An unknown error occurred.";
+                break;
+        }
+        console.log(message);
+
+    }
+</script>
+</body>
+</html>

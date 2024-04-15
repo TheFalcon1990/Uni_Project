@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AttendanceHub Admin Panel</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <style>
+    body, html {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #e6e6e6;
+      height: 100%;
+    }
+    header {
+      background-color: #003366;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+    nav {
+      background-color: #0055b3;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    nav a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    nav a:hover {
+      background-color: #007bff;
+      color: white;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .timetable-management, .footer {
+      background-color: #0055b3;
+      color: white;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .timetable-management:hover, .footer:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+    button {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .footer {
+      grid-column: span 2;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Admin Panel</h1>
+</header>
+<nav>
+  <a href="#">Dashboard</a>
+  <a href="#">Manage Students</a>
+  <a href="#">Manage Timetable</a>
+</nav>
+<div class="container">
+  <div class="timetable-management">
+    <h2>Manage Timetable</h2>
+    <label for="student-select">Select Student:</label>
+    <select id="student-select">
+      <option value="student1">William Baptist</option>
+      <option value="student2">Student 2</option>
+    </select>
+
+    <label for="module-select">Select Module:</label>
+    <select id="module-select">
+      <option value="Cyber Security">Cyber Security</option>
+      <option value="Algorithms and Data Structures">Algorithms and Data Structures</option>
+    </select>
+
+    <button onclick="addModuleToStudent()">Add Module</button>
+  </div>
+  <div class="footer">
+    <p>Team Project 2024</p>
+  </div>
+</div>
+
+<script>
+  function addModuleToStudent() {
+    var student = document.getElementById("student-select").value;
+    var module = document.getElementById("module-select").value;
+    // backend needed
+    alert("Module " + module + " added to " + student + "'s timetable.");
+  }
+</script>
+</body>
+</html>

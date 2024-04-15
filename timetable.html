@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable and Attendance System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        header h1 {
+            margin: 0;
+        }
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .container {
+            padding: 20px;
+            width: 80%;
+            margin: auto;
+        }
+        .timetable {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .edit-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .edit-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        function addRow() {
+            var table = document.getElementById("timetable");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            var days = ["Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+            for (var i = 0; i < days.length; i++) {
+                var cell = row.insertCell(i);
+                if (i === 0) {
+                    var timeInput = document.createElement("input");
+                    timeInput.type = "time";
+                    cell.appendChild(timeInput);
+                } else {
+                    var subjectInput = document.createElement("input");
+                    subjectInput.type = "text";
+                    subjectInput.placeholder = "Subject";
+                    cell.appendChild(subjectInput);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<header>
+    <h1>AttendanceHub</h1>
+</header>
+<nav>
+    <a href="#">Dashboard</a>
+    <a href="#">Timetable</a>
+    <a href="#">Attendance</a>
+    <a href="#">Admin Panel</a>
+</nav>
+<div class="container">
+    <h2>Welcome, User</h2>
+    <div class="timetable">
+        <h3>Your Timetable</h3>
+        <button class="edit-button" onclick="addRow()">Add Row</button>
+        <table id="timetable">
+            <tr>
+                <th>Time</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+            </tr>
+            <tr>
+                <td><input type="time"></td>
+                <td><input type="text" placeholder="Subject"></td>
+                <td><input type="text" placeholder="Subject"></td>
+                <td><input type="text" placeholder="Subject"></td>
+                <td><input type="text" placeholder="Subject"></td>
+                <td><input type="text" placeholder="Subject"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="footer">
+    <p>Team Project 2024</p>
+</div>
+</body>
+</html>

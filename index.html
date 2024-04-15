@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Timetable</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: blue;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .lecture {
+            background-color: #cceeff;
+        }
+        .practical {
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+<body>
+    <h1>computer science with AI </h1>
+    <table id="timetable">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+  
+  
+
+  <!-- Legend for colors used in timetable -->
+  <div class="legend">
+      <h2>Legend for Colors Used in Timetable</h2>
+      <div class="lecture-color= light blue"></div><span>Lecture (blue)</span>
+      <div class="practical-color= light green "></div><span>Practical (green) </span>
+  </div>
+    <script>
+        // Define your timetable data with time slots
+        const timetable = {
+          "9:00 Am-10:00 Am": {
+              "Monday": [{type: "practical", subject: "Team project"}],
+              "Tuesday": [],
+              "Wednesday": [],
+              "Thursday": [],
+              "Friday": []
+          },
+
+           "10:00 AM-11:00 AM": {
+                 "Monday": [{type: "practical", subject: "Team Project"}],
+                 "Tuesday": [{type: "lecture", subject: "Cyber security"}],
+                 "Wednesday": [{type: "lecture", subject: "Online support session"}],
+                 "Thursday": [{type: "lecture", subject: "Mathematics 1"}],
+                 "Friday": [{type: "practical", subject: "Operating system"}]
+             },
+           "11:00 AM-12:00 PM": {
+               "Monday": [],
+               "Tuesday": [{type: "lecture", subject: "Cyber security"}],
+               "Wednesday": [],
+               "Thursday": [{type: "lecture", subject: "Mathematics 1"}],
+               "Friday": [{type: "practical", subject: "Operating system"}]
+           },
+          "12:00 PM-1:00 PM": {
+              "Monday": [],
+              "Tuesday": [],
+              "Wednesday": [],
+              "Thursday": [],
+              "Friday": []
+          },
+            "1:00 PM-2:00 PM": {
+                "Monday": [{type: "lecture", subject: "Operating system"}],
+                "Tuesday": [{type: "practical", subject: "Team project"}],
+                "Wednesday": [],
+                "Thursday": [{type: "practical", subject: "Mathematics 1"}],
+                "Friday": []
+            },
+          "2:00 PM-3:00 PM": {
+              "Monday": [{type: "lecture", subject: "Operating system"}],
+              "Tuesday": [{type: "practical", subject: "Team project"}],
+              "Wednesday": [],
+              "Thursday": [{type: "practical", subject: "Mathematics 1"}],
+              "Friday": []
+          },
+          "3:00 PM-4:00 PM": {
+              "Monday": [],
+              "Tuesday": [],
+              "Wednesday": [],
+              "Thursday": [],
+              "Friday": [{type: "practical", subject: "Cyber security"}]
+          },
+
+            "4:00 PM-5:00 PM": {
+                    "Monday": [],
+                    "Tuesday": [],
+                    "Wednesday": [],
+                    "Thursday": [],
+                    "Friday": [{type: "practical", subject: "Cyber security"}]
+                },
+                "5:00 PM-6:00 PM": {
+                    "Monday": [],
+                    "Tuesday": [],
+                    "Wednesday": [],
+                    "Thursday": [],
+                    "Friday": []
+             },
+
+        };
+
+        // Function to display timetable
+      function displayTimetable() {
+          const timetableTable = document.getElementById("timetable").getElementsByTagName('tbody')[0];
+          const timeSlots = Object.keys(timetable);
+          for (const time of timeSlots) {
+              const subjectsByDay = timetable[time];
+              const row = timetableTable.insertRow();
+              const timeCell = row.insertCell(0);
+              timeCell.textContent = time;
+              for (const day in subjectsByDay) {
+                  const subjects = subjectsByDay[day];
+                  const subjectCell = row.insertCell();
+                  const className = subjects.length > 0 ? subjects[0].type : 'empty'; // Use 'empty' class if no subjects
+                  subjectCell.classList.add(className); // Add class based on subject type
+                  subjectCell.textContent = subjects.map(subject => subject.subject).join(", ");
+              }
+          }
+      }
+
+        // Call the function to display the timetable
+        displayTimetable();
+    </script>
+</body>
+</html>
