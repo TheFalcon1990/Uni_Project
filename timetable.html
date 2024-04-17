@@ -4,155 +4,210 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timetable and Attendance System</title>
+    <meta viewport="width=device-width, initial-scale=1.0">
+    <title>Timetable System</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            background-color: #f4f4f4;
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background-color: #e6e6e6;
+            color: #333;
         }
-        header {
-            background-color: #4CAF50;
+        .header {
+            background-color: #003366;
             color: white;
             text-align: center;
-            padding: 1rem 0;
-        }
-        header h1 {
-            margin: 0;
-        }
-        nav {
-            background-color: #333;
-            overflow: hidden;
-        }
-        nav a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 17px;
-        }
-        nav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-        .container {
             padding: 20px;
-            width: 80%;
-            margin: auto;
         }
-        .timetable {
-            background-color: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .selector, .attendance {
             text-align: center;
+            margin: 20px;
         }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        .footer {
-            text-align: center;
-            padding: 20px 0;
-            background-color: #333;
-            color: white;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-        .edit-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            margin: 10px 0;
-            border-radius: 5px;
+        button, select {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
             cursor: pointer;
         }
-        .edit-button:hover {
-            background-color: #45a049;
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #0055b3;
+            padding: 10px;
+            text-align: left;
+            background-color: #007bff;
+            color: white;
+        }
+        th {
+            background-color: #003366;
+        }
+        .hidden {
+            display: none;
         }
     </style>
-    <script>
-        function addRow() {
-            var table = document.getElementById("timetable");
-            var rowCount = table.rows.length;
-            var row = table.insertRow(rowCount);
-            var days = ["Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-
-            for (var i = 0; i < days.length; i++) {
-                var cell = row.insertCell(i);
-                if (i === 0) {
-                    var timeInput = document.createElement("input");
-                    timeInput.type = "time";
-                    cell.appendChild(timeInput);
-                } else {
-                    var subjectInput = document.createElement("input");
-                    subjectInput.type = "text";
-                    subjectInput.placeholder = "Subject";
-                    cell.appendChild(subjectInput);
-                }
-            }
-        }
-    </script>
 </head>
 <body>
-<header>
-    <h1>AttendanceHub</h1>
-</header>
-<nav>
-    <a href="#">Dashboard</a>
-    <a href="#">Timetable</a>
-    <a href="#">Attendance</a>
-    <a href="#">Admin Panel</a>
-</nav>
-<div class="container">
-    <h2>Welcome, User</h2>
-    <div class="timetable">
-        <h3>Your Timetable</h3>
-        <button class="edit-button" onclick="addRow()">Add Row</button>
-        <table id="timetable">
-            <tr>
-                <th>Time</th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-            </tr>
-            <tr>
-                <td><input type="time"></td>
-                <td><input type="text" placeholder="Subject"></td>
-                <td><input type="text" placeholder="Subject"></td>
-                <td><input type="text" placeholder="Subject"></td>
-                <td><input type="text" placeholder="Subject"></td>
-                <td><input type="text" placeholder="Subject"></td>
-            </tr>
-        </table>
-    </div>
+<div class="header">
+    <h1>Timetable System</h1>
 </div>
-<div class="footer">
-    <p>Team Project 2024</p>
+<div class="selector">
+    <button onclick="changeMode('student')">Student Mode</button>
+    <button onclick="changeMode('tutor')">Tutor Mode</button>
+    <button onclick="changeMode('admin')">Admin Mode</button>
+    <select id="adminView" class="hidden" onchange="adminSelectClass()">
+        <option value="">Select Class for Details</option>
+    </select>
 </div>
+<table id="timetable" class="hidden">
+    <thead>
+    <tr>
+        <th>Time</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<div id="attendanceList" class="attendance hidden">
+    <h2>Attendance</h2>
+    <ul id="studentAttendance"></ul>
+</div>
+
+<script>
+    const classes = {
+        "Tutor1": {
+            "9:00-10:00": {"Monday": { subject: "Maths Lecture", room: "SJ1/2", students: ["William", "Bob"] }},
+            "10:00-11:00": {"Monday": { subject: "Operating Systems", room: "SJ2/4", students: ["William"] }},
+        },
+        "Tutor2": {
+            "9:00-10:00": {"Tuesday": { subject: "Cybersecurity", room: "OA1/2", students: ["Hussain", "Steve"] }},
+            "10:00-11:00": {"Tuesday": { subject: "Team Project", room: "OA2/1", students: ["Bob", "Hussain"] }},
+        }
+    };
+
+    const studentClasses = {
+        "William": ["Maths Lecture", "Operating Systems"],
+        "Bob": ["Maths Lecture", "Team Project"],
+        "Hussain": ["Cybersecurity", "Team Project"],
+        "Steve": ["Cybersecurity"],
+    };
+
+    let currentMode = '';
+
+    function changeMode(mode) {
+        currentMode = mode;
+        document.getElementById('adminView').classList.add('hidden');
+        document.getElementById('timetable').classList.add('hidden');
+        document.getElementById('attendanceList').classList.add('hidden');
+
+        if (mode === 'admin') {
+            populateAdminDropdown();
+        } else {
+            displayTimetable(mode);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        initialiseAttendance();
+        updateAttendanceDisplay();
+    });
+
+    function initialiseAttendance() {
+        // Reset William's attendance to "Absent" at each page load
+        localStorage.setItem('William-Maths Lecture', 'Absent');
+        localStorage.setItem('William-Operating Systems', 'Absent');
+    }
+
+    function updateAttendanceDisplay() {
+        const attendanceList = document.getElementById('studentAttendance');
+        attendanceList.innerHTML = '';  // Clear current list
+        studentClasses['William'].forEach(classSubject => {
+            let attendanceStatus = localStorage.getItem(`William-${classSubject}`);
+            let li = document.createElement('li');
+            li.textContent = `${classSubject}: ${attendanceStatus}`;
+            attendanceList.appendChild(li);
+        });
+    }
+
+    function displayTimetable(mode) {
+        const timetableBody = document.getElementById('timetable').getElementsByTagName('tbody')[0];
+        timetableBody.innerHTML = '';
+        document.getElementById('timetable').classList.remove('hidden');
+
+        if (mode === 'student' || mode === 'admin') {
+            Object.entries(classes).forEach(([tutor, timeSlots]) => {
+                Object.entries(timeSlots).forEach(([time, days]) => {
+                    Object.entries(days).forEach(([day, {subject, room, students}]) => {
+                        if (mode === 'student' && studentClasses['William'].includes(subject)) {
+                            let row = timetableBody.insertRow();
+                            row.innerHTML = `<td>${time}</td><td>${day}: ${subject} - ${room}</td>`;
+                        }
+                        if (mode === 'admin') {
+                            let row = timetableBody.insertRow();
+                            row.innerHTML = `<td>${time}</td><td>${day}: ${subject} - ${room} <button onclick='showAttendance("${subject}", ${JSON.stringify(students)})'>Show Attendance</button></td>`;
+                        }
+                    });
+                });
+            });
+        } else { // Tutor mode
+            let modeData = classes['Tutor1']; // Example Tutor
+            Object.entries(modeData).forEach(([time, days]) => {
+                Object.entries(days).forEach(([day, {subject, room, students}]) => {
+                    let row = timetableBody.insertRow();
+                    row.innerHTML = `<td>${time}</td><td>${day}: ${subject} - ${room} <button onclick='showAttendance("${subject}", ${JSON.stringify(students)})'>Show Attendance</button></td>`;
+                });
+            });
+        }
+    }
+
+    function populateAdminDropdown() {
+        const adminView = document.getElementById('adminView');
+        adminView.innerHTML = '<option value="">Select Class for Details</option>';
+        adminView.classList.remove('hidden');
+
+        Object.keys(classes).forEach(tutor => {
+            Object.keys(classes[tutor]).forEach(time => {
+                Object.keys(classes[tutor][time]).forEach(day => {
+                    const subject = classes[tutor][time][day].subject;
+                    let option = document.createElement('option');
+                    option.value = `${tutor}-${time}-${day}`;
+                    option.textContent = `Tutor: ${tutor}, Time: ${time}, Day: ${day}, Subject: ${subject}`;
+                    adminView.appendChild(option);
+                });
+            });
+        });
+    }
+
+    function adminSelectClass() {
+        const selectedValue = document.getElementById('adminView').value;
+        if (!selectedValue) return;
+        const [tutor, time, day] = selectedValue.split('-');
+        displayTimetable('admin');
+    }
+
+    function showAttendance(subject, students) {
+        document.getElementById('attendanceList').classList.remove('hidden');
+        const list = document.getElementById('studentAttendance');
+        list.innerHTML = '';
+
+        students.forEach(student => {
+            let li = document.createElement('li');
+            li.textContent = `${student} - Present`;
+            list.appendChild(li);
+        });
+    }
+</script>
+
 </body>
 </html>
+
 
