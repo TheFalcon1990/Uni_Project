@@ -5,41 +5,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University Timetable</title>
+    <title>Timetable and Attendance System</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: white;
-            color: blue;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
         }
-        h1 {
+        header {
+            background-color: #4CAF50;
+            color: white;
             text-align: center;
+            padding: 1rem 0;
+        }
+        header h1 {
+            margin: 0;
+        }
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .container {
+            padding: 20px;
+            width: 80%;
+            margin: auto;
+        }
+        .timetable {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            text-align: center;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
         }
         th, td {
-            border: 1px solid #dddddd;
             padding: 8px;
-            text-align: left;
         }
         th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        .lecture {
-            background-color: #cceeff;
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
         }
-        .practical {
-            background-color: lightgreen;
+        .edit-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .edit-button:hover {
+            background-color: #45a049;
         }
     </style>
+    <script>
+        function addRow() {
+            var table = document.getElementById("timetable");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            var days = ["Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+            for (var i = 0; i < days.length; i++) {
+                var cell = row.insertCell(i);
+                if (i === 0) {
+                    var timeInput = document.createElement("input");
+                    timeInput.type = "time";
+                    cell.appendChild(timeInput);
+                } else {
+                    var subjectInput = document.createElement("input");
+                    subjectInput.type = "text";
+                    subjectInput.placeholder = "Subject";
+                    cell.appendChild(subjectInput);
+                }
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>computer science with AI </h1>
-    <table id="timetable">
-        <thead>
+<header>
+    <h1>AttendanceHub</h1>
+</header>
+<nav>
+    <a href="#">Dashboard</a>
+    <a href="#">Timetable</a>
+    <a href="#">Attendance</a>
+    <a href="#">Admin Panel</a>
+</nav>
+<div class="container">
+    <h2>Welcome, User</h2>
+    <div class="timetable">
+        <h3>Your Timetable</h3>
+        <button class="edit-button" onclick="addRow()">Add Row</button>
+        <table id="timetable">
             <tr>
                 <th>Time</th>
                 <th>Monday</th>
@@ -48,111 +139,20 @@
                 <th>Thursday</th>
                 <th>Friday</th>
             </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-  
-  
-
-  <!-- Legend for colors used in timetable -->
-  <div class="legend">
-      <h2>Legend for Colors Used in Timetable</h2>
-      <div class="lecture-color= light blue"></div><span>Lecture (blue)</span>
-      <div class="practical-color= light green "></div><span>Practical (green) </span>
-  </div>
-    <script>
-        // Define your timetable data with time slots
-        const timetable = {
-          "9:00 Am-10:00 Am": {
-              "Monday": [{type: "practical", subject: "Team project"}],
-              "Tuesday": [],
-              "Wednesday": [],
-              "Thursday": [],
-              "Friday": []
-          },
-
-           "10:00 AM-11:00 AM": {
-                 "Monday": [{type: "practical", subject: "Team Project"}],
-                 "Tuesday": [{type: "lecture", subject: "Cyber security"}],
-                 "Wednesday": [{type: "lecture", subject: "Online support session"}],
-                 "Thursday": [{type: "lecture", subject: "Mathematics 1"}],
-                 "Friday": [{type: "practical", subject: "Operating system"}]
-             },
-           "11:00 AM-12:00 PM": {
-               "Monday": [],
-               "Tuesday": [{type: "lecture", subject: "Cyber security"}],
-               "Wednesday": [],
-               "Thursday": [{type: "lecture", subject: "Mathematics 1"}],
-               "Friday": [{type: "practical", subject: "Operating system"}]
-           },
-          "12:00 PM-1:00 PM": {
-              "Monday": [],
-              "Tuesday": [],
-              "Wednesday": [],
-              "Thursday": [],
-              "Friday": []
-          },
-            "1:00 PM-2:00 PM": {
-                "Monday": [{type: "lecture", subject: "Operating system"}],
-                "Tuesday": [{type: "practical", subject: "Team project"}],
-                "Wednesday": [],
-                "Thursday": [{type: "practical", subject: "Mathematics 1"}],
-                "Friday": []
-            },
-          "2:00 PM-3:00 PM": {
-              "Monday": [{type: "lecture", subject: "Operating system"}],
-              "Tuesday": [{type: "practical", subject: "Team project"}],
-              "Wednesday": [],
-              "Thursday": [{type: "practical", subject: "Mathematics 1"}],
-              "Friday": []
-          },
-          "3:00 PM-4:00 PM": {
-              "Monday": [],
-              "Tuesday": [],
-              "Wednesday": [],
-              "Thursday": [],
-              "Friday": [{type: "practical", subject: "Cyber security"}]
-          },
-
-            "4:00 PM-5:00 PM": {
-                    "Monday": [],
-                    "Tuesday": [],
-                    "Wednesday": [],
-                    "Thursday": [],
-                    "Friday": [{type: "practical", subject: "Cyber security"}]
-                },
-                "5:00 PM-6:00 PM": {
-                    "Monday": [],
-                    "Tuesday": [],
-                    "Wednesday": [],
-                    "Thursday": [],
-                    "Friday": []
-             },
-
-        };
-
-        // Function to display timetable
-      function displayTimetable() {
-          const timetableTable = document.getElementById("timetable").getElementsByTagName('tbody')[0];
-          const timeSlots = Object.keys(timetable);
-          for (const time of timeSlots) {
-              const subjectsByDay = timetable[time];
-              const row = timetableTable.insertRow();
-              const timeCell = row.insertCell(0);
-              timeCell.textContent = time;
-              for (const day in subjectsByDay) {
-                  const subjects = subjectsByDay[day];
-                  const subjectCell = row.insertCell();
-                  const className = subjects.length > 0 ? subjects[0].type : 'empty'; // Use 'empty' class if no subjects
-                  subjectCell.classList.add(className); // Add class based on subject type
-                  subjectCell.textContent = subjects.map(subject => subject.subject).join(", ");
-              }
-          }
-      }
-
-        // Call the function to display the timetable
-        displayTimetable();
-    </script>
+            <tr>
+                <td><input type="time"></td>
+                <td><input type="text" placeholder="Subject"></td>
+                <td><input type="text" placeholder="Subject"></td>
+                <td><input type="text" placeholder="Subject"></td>
+                <td><input type="text" placeholder="Subject"></td>
+                <td><input type="text" placeholder="Subject"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="footer">
+    <p>Team Project 2024</p>
+</div>
 </body>
 </html>
+
