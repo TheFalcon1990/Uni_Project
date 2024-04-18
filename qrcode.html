@@ -18,7 +18,7 @@
             text-align: center;
             padding: 1rem;
         }
-        #qr-reader, #file-input, #pin-input {
+        #qr-reader, #file-input, #pin-input, #pin-section {
             width: 100%;
             max-width: 500px;
             margin: 20px auto;
@@ -40,6 +40,9 @@
             margin: 10px 0;
             font-size: 16px;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -49,8 +52,10 @@
 <div class="content">
     <div id="qr-reader"></div>
     <input type="file" id="file-input" accept="image/*"/>
-    <input type="text" id="pin-input" placeholder="Enter PIN"/>
-    <input type="button" value="Verify PIN" onclick="verifyPin()"/>
+    <div id="pin-section">
+        <input type="text" id="pin-input" placeholder="Enter PIN"/>
+        <input type="button" value="Verify PIN" onclick="verifyPin()"/>
+    </div>
     <div id="qr-result">QR code result will appear here</div>
     <div id="pin-result"></div>
 </div>
@@ -58,16 +63,17 @@
 <script src="https://unpkg.com/html5-qrcode"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const qrReader = new Html5QrcodeScanner(
+        const qrReader = new Html5Qrcode("qr-reader");
+        const qrScanner = new Html5QrcodeScanner(
             "qr-reader",
             { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1 },
             false
         );
-        qrReader.render(onScanSuccess);
+        qrScanner.render(onScanSuccess);
 
         document.getElementById('file-input').addEventListener('change', function() {
             if (this.files && this.files[0]) {
-                Html5QrcodeScanner.scanFile(this.files[0], true)
+                qrReader.scanFile(this.files[0], true)
                     .then(decodedText => {
                         onScanSuccess(decodedText);
                     })
@@ -77,15 +83,21 @@
             }
         });
 
-        function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
-            updateResultDisplay("Successfully scanned QR Code. Please verify with PIN.");
+        function onScanSuccess(decodedText) {
+            console.log(`Code scanned = ${decodedText}`);
+            updateResultDisplay("Successfully scanned QR Code.");
+            document.getElementById('pin-section').classList.add('hidden'); // Hide PIN section
         }
 
         function verifyPin() {
+            if (document.getElementById('pin-section').classList.contains('hidden')) {
+                updatePinDisplay("Please scan QR Code first.");
+                return;
+            }
             const pinInput = document.getElementById('pin-input').value;
             if (pinInput === "1234") {
                 updatePinDisplay("PIN verification successful. Attendance marked.");
+                localStorage.setItem('William-Maths Lecture', 'Present');
             } else {
                 updatePinDisplay("Incorrect PIN. Please try again.");
             }
