@@ -11,23 +11,23 @@
         .refresh-button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
     </style>
     <script>
-        // Function to generate a random PIN
+
         function generatePIN() {
             return Math.floor(Math.random() * 10000).toString().padStart(4, '0');
         }
 
-        // Function to generate a unique ID
+
         function generateUniqueID() {
             return Math.random().toString(16).substring(2, 12);
         }
 
-        // Function to encode URI components
+
         function encodeURIComponents(classId, startTime, pin) {
             const uniqueID = generateUniqueID();
             return `http://localhost/verify.php?code=${uniqueID}&classId=${encodeURIComponent(classId)}&startTime=${encodeURIComponent(startTime)}&pin=${pin}`;
         }
 
-        // Function to manage the countdown timer
+
         function startTimer(duration, display) {
             let timer = duration, minutes, seconds;
             const intervalId = setInterval(function () {
@@ -40,14 +40,14 @@
                 display.textContent = minutes + ":" + seconds;
 
                 if (--timer < 0) {
-                    clearInterval(intervalId); // Clear interval when time is up
-                    refreshContent(); // Refresh the content
-                    startTimer(duration, display); // Restart the timer
+                    clearInterval(intervalId);
+                    refreshContent();
+                    startTimer(duration, display);
                 }
             }, 1000);
         }
 
-        // Function to refresh QR and PIN
+        
         function refreshContent() {
             const pin = generatePIN();
             const qrCodeURL = encodeURIComponents("Computer Science", "9:00AM", pin);
@@ -56,10 +56,10 @@
         }
 
         window.onload = function () {
-            const fiveMinutes = 5 * 60; // 5 minutes in seconds
-            refreshContent(); // Refresh content on page load
+            const fiveMinutes = 5 * 60;
+            refreshContent();
             const display = document.querySelector('#time');
-            startTimer(fiveMinutes, display); // Start countdown
+            startTimer(fiveMinutes, display);
         };
     </script>
 </head>
