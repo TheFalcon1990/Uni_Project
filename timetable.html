@@ -1,5 +1,3 @@
-// I am checking my Github
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,12 +156,12 @@
                     });
                 });
             });
-        } else { // Tutor mode
-            let modeData = classes['Tutor1']; // Example Tutor
+        } else {
+            let modeData = classes['Tutor1'];
             Object.entries(modeData).forEach(([time, days]) => {
                 Object.entries(days).forEach(([day, {subject, room, students}]) => {
                     let row = timetableBody.insertRow();
-                    row.innerHTML = `<td>${time}</td><td>${day}: ${subject} - ${room} <button onclick='showAttendance("${subject}", ${JSON.stringify(students)})'>Show Attendance</button></td>`;
+                    row.innerHTML = `<td>${time}</td><td>${day}: ${subject} - ${room} <button onclick='showAttendance("${subject}", ${JSON.stringify(students)})'>Show Attendance</button> <a href='admin.html?subject=${encodeURIComponent(subject)}&tutor=${encodeURIComponent("Tutor1")}' target='_blank'><button>QR Code</button></a></td>`;
                 });
             });
         }
@@ -209,5 +207,3 @@
 
 </body>
 </html>
-
-
