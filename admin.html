@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin QR Code Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { display: flex; flex-direction: column; align-items: center; }
+        .timer, .pin { margin: 10px; }
+        .refresh-button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+    <script>
+        // Function to generate a random PIN
+        function generatePIN() {
+            return Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+        }
+
+        // Function to generate a unique ID
+        function generateUniqueID() {
+            return Math.random().toString(16).substring(2, 12);
+        }
+
+        // Function to encode URI components
+        function encodeURIComponents(classId, startTime, pin) {
+            const uniqueID = generateUniqueID();
+            return `http://localhost/verify.php?code=${uniqueID}&classId=${encodeURIComponent(classId)}&startTime=${encodeURIComponent(startTime)}&pin=${pin}`;
+        }
+
+        // Function to manage the countdown timer
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            const intervalId = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(intervalId); // Clear interval when time is up
+                    refreshContent(); // Refresh the content
+                    startTimer(duration, display); // Restart the timer
+                }
+            }, 1000);
+        }
+
+        // Function to refresh QR and PIN
+        function refreshContent() {
+            const pin = generatePIN();
+            const qrCodeURL = encodeURIComponents("Computer Science", "9:00AM", pin);
+            document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrCodeURL)}`;
+            document.getElementById('pinDisplay').textContent = pin;
+        }
+
+        window.onload = function () {
+            const fiveMinutes = 5 * 60; // 5 minutes in seconds
+            refreshContent(); // Refresh content on page load
+            const display = document.querySelector('#time');
+            startTimer(fiveMinutes, display); // Start countdown
+        };
+    </script>
+</head>
+<body>
+<div class="container">
+    <img id="qrImage" alt="QR Code" />
+    <div class="timer">Time until next refresh: <span id='time'></span> seconds</div>
+    <div class="pin">Current PIN: <strong id="pinDisplay"></strong></div>
+    <button class="refresh-button" onclick="refreshContent()">Refresh Now</button>
+</div>
+</body>
+</html>
