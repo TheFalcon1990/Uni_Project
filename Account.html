@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Timetable System</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background-color: #e6e6e6;
+            color: #333;
+        }
+        .header {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .content {
+            text-align: center;
+            padding: 20px;
+        }
+        button, select, input[type="file"], input[type="checkbox"], input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .account-info {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            margin: 20px auto;
+            width: 80%;
+            border-radius: 10px;
+            text-align: left;
+        }
+        img.profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        .user-list {
+            text-align: left;
+            background-color: #f8f9fa;
+            color: #333;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        td input[type="text"] {
+            width: 100%;
+            box-sizing: border-box; /* Makes sure the padding and border are included in the width */
+        }
+        td button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>My Account - Timetable System</h1>
+</div>
+<div class="content">
+    <button onclick="showAccountDetails('William')">Student Account</button>
+    <button onclick="showAccountDetails('Professor Smith')">Tutor Account</button>
+    <button onclick="showAccountDetails('Administrator')">Admin Account</button>
+    <div id="accountDetails" class="account-info"></div>
+</div>
+
+<script>
+    const accounts = {
+        "William": {
+            name: "William",
+            email: "william@myhud.ac.uk",
+            role: "Student",
+            modules: ["Maths Lecture", "Operating Systems"],
+            profilePic: "path/to/default.jpg"
+        },
+        "Professor Smith": {
+            name: "Professor Smith",
+            email: "prof.smith@myhud.ac.uk",
+            role: "Tutor",
+            modules: ["Maths Lecture", "Operating Systems"],
+            profilePic: "path/to/default.jpg"
+        },
+        "Administrator": {
+            name: "Administrator",
+            email: "admin@myhud.ac.uk",
+            role: "Admin",
+            privileges: {
+                "Manage Accounts": true,
+                "Set Timetables": false,
+                "Modify Courses": true
+            },
+            profilePic: "path/to/default.jpg",
+            users: ["William", "Professor Smith"]
+        }
+    };
+
+    function showAccountDetails(userName) {
+        const details = accounts[userName];
+        const accountDiv = document.getElementById('accountDetails');
+        accountDiv.innerHTML = `<img src="${details.profilePic}" alt="Profile Picture" class="profile-pic">`;
+        accountDiv.innerHTML += `<input type="file" onchange="uploadProfilePic(this.files)">`;
+        accountDiv.innerHTML += `<h2>${details.role} Account</h2>`;
+        accountDiv.innerHTML += `<p>Name: ${details.name}</p>`;
+        accountDiv.innerHTML += `<p>Email: ${details.email}</p>`;
+
+        if (details.role === 'Student' || details.role === 'Tutor') {
+            let coursesHeader = details.role === 'Student' ? "Enrolled Courses" : "Assigned Classes";
+            accountDiv.innerHTML += `<h3>${coursesHeader}:</h3><ul>`;
+            details.modules.forEach(module => {
+                accountDiv.innerHTML += `<li>${module}</li>`;
+            });
+            accountDiv.innerHTML += `</ul>`;
+        } else if (details.role === 'Admin') {
+            accountDiv.innerHTML += `<h3>Privileges:</h3><ul>`;
+            Object.keys(details.privileges).forEach(privilege => {
+                let isChecked = details.privileges[privilege] ? 'checked' : '';
+                accountDiv.innerHTML += `<li><input type="checkbox" ${isChecked} onchange="togglePrivilege('${privilege}', this.checked)"> ${privilege}</li>`;
+            });
+            accountDiv.innerHTML += `</ul>`;
+            showUserManagement();
+        }
+    }
+
+    function uploadProfilePic(files) {
+        const fileReader = new FileReader();
+        fileReader.onload = function () {
+            const img = document.querySelector('.profile-pic');
+            img.src = fileReader.result;
+        };
+        fileReader.readAsDataURL(files[0]);
+    }
+
+    function togglePrivilege(privilege, isEnabled) {
+        console.log(`Privilege ${privilege} has been ${isEnabled ? 'enabled' : 'disabled'}.`);
+    }
+
+    function showUserManagement() {
+        const adminDetails = accounts["Administrator"];
+        const accountDiv = document.getElementById('accountDetails');
+        accountDiv.innerHTML += `<div class="user-list"><strong>User Management:</strong><br>`;
+        accountDiv.innerHTML += `<table><tr><th>Name</th><th>Role</th><th>Modules</th><th>Actions</th></tr>`;
+        adminDetails.users.forEach(userName => {
+            let user = accounts[userName];
+            let modulesEditable = `<input type="text" value="${user.modules.join(', ')}" id="${userName}-modules">`;
+            accountDiv.innerHTML += `<tr><td>${user.name}</td><td>${user.role}</td><td>${modulesEditable}</td><td><button onclick="updateModules('${userName}')">Update</button></td></tr>`;
+        });
+        accountDiv.innerHTML += `</table></div>`;
+    }
+
+    function updateModules(userName) {
+        const newModules = document.getElementById(`${userName}-modules`).value.split(',').map(item => item.trim());
+        accounts[userName].modules = newModules;
+        console.log(`Modules for ${userName} updated to: ${newModules.join(', ')}`);
+        alert(`Modules for ${userName} have been updated.`);
+        showAccountDetails(userName);
+    }
+</script>
+
+</body>
+</html>
