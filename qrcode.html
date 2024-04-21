@@ -86,13 +86,15 @@
         function onScanSuccess(decodedText) {
             console.log(`Code scanned = ${decodedText}`);
             updateResultDisplay("Successfully scanned QR Code.");
-            document.getElementById('pin-section').classList.add('hidden'); // Hide PIN section
+            // Removed the hiding of the PIN section so that it can still be used
         }
 
         function verifyPin() {
             const pinInput = document.getElementById('pin-input').value;
             if (pinInput === "1234") {
                 updatePinDisplay("Invalid Pincode"); // Always show "Invalid Pincode" for 1234
+            } else if (pinInput.trim() === "") {
+                updatePinDisplay("Please enter a PIN."); // Handle empty input
             } else {
                 updatePinDisplay("Incorrect PIN. Please try again.");
             }
