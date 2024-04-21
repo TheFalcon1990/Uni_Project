@@ -26,7 +26,7 @@
         #qr-result, #pin-result {
             margin-top: 20px;
             text-align: center;
-            color: black; /* Changed color to black */
+            color: white;
         }
         .content {
             padding: 1rem;
@@ -86,15 +86,18 @@
         function onScanSuccess(decodedText) {
             console.log(`Code scanned = ${decodedText}`);
             updateResultDisplay("Successfully scanned QR Code.");
-            // Removed the hiding of the PIN section so that it can still be used
+            document.getElementById('pin-section').classList.add('hidden'); // Hide PIN section
         }
 
         function verifyPin() {
+            if (document.getElementById('pin-section').classList.contains('hidden')) {
+                updatePinDisplay("Please scan QR Code first.");
+                return;
+            }
             const pinInput = document.getElementById('pin-input').value;
             if (pinInput === "1234") {
-                updatePinDisplay("Invalid Pincode"); // Always show "Invalid Pincode" for 1234
-            } else if (pinInput.trim() === "") {
-                updatePinDisplay("Please enter a PIN."); // Handle empty input
+                updatePinDisplay("PIN verification successful. Attendance marked.");
+                localStorage.setItem('William-Maths Lecture', 'Present');
             } else {
                 updatePinDisplay("Incorrect PIN. Please try again.");
             }
